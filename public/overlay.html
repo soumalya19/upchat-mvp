@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <title>UPChat Overlay</title>
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            /* Soft Purple */
+            --primary-dark: #7c3aed;
+            --text: #ffffff;
+            --glow: rgba(139, 92, 246, 0.4);
+            --background: rgba(255, 255, 255, 0.1);
+            --blur: blur(12px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: transparent !important;
+            overflow: hidden;
+            font-family: 'Segoe UI', 'Poppins', sans-serif;
+        }
+
+        .donation-box {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            padding: 1.2rem 2rem;
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            border-radius: 2rem;
+            box-shadow: 0 8px 40px rgba(128, 90, 213, 0.5);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            backdrop-filter: blur(15px);
+            z-index: 999999;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .donation-box.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-20px);
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            animation: pop 1s infinite alternate;
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.2);
+            }
+
+        }
+
+        img,
+        video {
+            display: block;
+            margin-top: 10px;
+            max-width: 180px;
+            border-radius: 12px;
+            border: 2px solid white;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="donationBox" class="donation-box">
+        <span class="emoji">💖</span>
+        <div class="content">
+            <span id="donationMessage">New donation!</span>
+            <div id="mediaContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const socket = new WebSocket(
+            (location.protocol === "https:" ? "wss://" : "ws://") + location.host
+        );
+
+
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+
+            const box = document.getElementById("donationBox");
+            const msg = document.getElementById("donationMessage");
+            const mediaContainer = document.getElementById("mediaContainer");
+
+            // Set message text
+            msg.textContent = `${data.name} sent ₹${data.amount}: "${data.message}"`;
+
+            // Remove old media
+            mediaContainer.innerHTML = "";
+
+            // Add media (image/video)
+            if (data.media) {
+                let mediaElement;
+                if (data.media.type.startsWith("image")) {
+                    mediaElement = document.createElement("img");
+                    mediaElement.src = data.media.url;
+                } else if (data.media.type.startsWith("video")) {
+                    mediaElement = document.createElement("video");
+                    mediaElement.src = data.media.url;
+                    mediaElement.autoplay = true;
+                    mediaElement.loop = true;
+                    mediaElement.muted = true;
+                }
+
+                if (mediaElement) {
+                    mediaContainer.appendChild(mediaElement);
+                }
+            }
+
+            // Show popup
+            box.classList.add("show");
+
+            setTimeout(() => {
+                box.classList.remove("show");
+            }, 6000);
+        };
+    </script>
+
+
+
+
+
+</body>
+
+</html>

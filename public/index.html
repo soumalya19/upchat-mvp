@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UPChat - Support Your Favorite Creator</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+
+<body>
+  <div class="container animate__animated animate__fadeIn">
+    <div class="header">
+      <div class="icon animate__animated animate__bounceIn">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6">
+          <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+      </div>
+      <h1 class="gradient-text">Support the Stream</h1>
+      <p class="subtitle">Send love to your favorite creator</p>
+    </div>
+
+    <form id="donationForm">
+      <div class="input-group animate__animated animate__fadeInUp animate__delay-1s">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" placeholder="Your Name" required />
+      </div>
+
+      <div class="input-group animate__animated animate__fadeInUp animate__delay-1s">
+        <label for="amount">Amount (INR)</label>
+        <input type="number" id="amount" placeholder="Enter amount" required />
+      </div>
+
+      <div class="input-group animate__animated animate__fadeInUp animate__delay-1s">
+        <label for="message">Your Message</label>
+        <textarea id="message" placeholder="Your Message" required rows="3"></textarea>
+
+        <label for="media">Attach Image or Video:</label>
+        <input type="file" id="media" name="media" accept="image/*,video/*">
+      </div>
+
+      <div class="input-group animate__animated animate__fadeInUp animate__delay-2s" style="text-align: center; margin-top: 1rem;">
+        <button type="button" id="generateQRBtn" class="pulse-button">
+          🔄 Generate QR
+        </button>
+      </div>
+    </form>
+
+    <div id="dynamicQRSection" style="display:none; text-align:center; margin-top:1rem;" class="animate__animated animate__zoomIn">
+      <h3 class="gradient-text">Scan to Pay</h3>
+      <canvas id="upiQRCanvas" style="margin-top: 10px;"></canvas>
+      <p style="margin-top:10px;">After paying, click below to send message to stream</p>
+      <button id="confirmPaymentBtn" class="success-button">
+        ✅ Send
+      </button>
+    </div>
+
+    <div class="security-badge animate__animated animate__fadeIn animate__delay-3s">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
+      <span>100% secure UPI payments</span>
+    </div>
+  </div>
+
+  
+
+  <script src="script.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+</body>
+
+</html>
